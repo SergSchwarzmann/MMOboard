@@ -1,0 +1,32 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Post
+{% endblock title %}
+
+{% block content %}
+        <h2>
+        <td>{{ post.header }}, {{ post.date | date:'d M Y' }}</td>
+        <br><br>
+
+        <br><br>
+            {{ post.category }}
+        <br><br>
+        <td>{{ post.text }}</td>
+        </h2>
+        <br><br><br><br><br><br><br><br>
+        <table style="width:100%">
+        <tr>
+                <td>
+                        <form action="{{ post.id }}/delete">
+                        <input type="submit" value="Delete" />
+                        </form>
+                </td>
+                <td>
+                        <form action="{{ post.id }}/edit">
+                        <input type="submit" value="Edit" />
+                        </form>
+                </td>
+        </tr>
+        </table>
+{% endblock content %}
