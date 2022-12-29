@@ -1,0 +1,41 @@
+<!--for testing and storage purposion-->
+
+{% for comment in comments %}
+            {% if user.id == post.author.id %}
+                <table style="text-align: left; width:500px; height:50px; font-size: 20px">
+                    <tr>
+                        <td>{{ comment.author }}:</td>
+                        <td>    {{ comment.text }}</td>
+                    <br>
+                    </tr>
+
+                    <table style="width:20%">
+                        <tr>
+                            {% if user.id == post.author.id %}
+                            <td>
+                                    <form action="{% url 'commentdelete' comment.id %}">
+                                    <input type="submit" value="Delete" />
+                                    </form>
+                            </td>
+                            <td>
+                                    <form action="{% url 'commentapprove' comment.id %}">
+                                    <input type="submit" value="Approve" />
+                                    </form>
+                            </td>
+                            {% endif %}
+
+                        </tr>
+                    </table>
+                </table>
+            {% endif %}
+
+            {% if comment.approve %}
+            <table style="text-align: left; width:500px; height:50px; font-size: 20px">
+                <tr>
+                    <td>{{ comment.author }}:</td>
+                    <td>    {{ comment.text }}</td>
+                <br>
+                </tr>
+            </table>
+            {% endif %}
+        {% endfor %}

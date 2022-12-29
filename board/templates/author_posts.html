@@ -1,0 +1,49 @@
+{% extends 'flatpages/default.html' %}
+
+
+{% block content %}
+<h2>Here is all your posts, {{ request.user.username }}</h2>
+
+<a class="nav-link" href="{% url 'profilepage' %}">Return to your profile page.</a><br>
+
+<br><br><br>
+<br>
+<br>
+{% for post in author_posts %}
+<table>
+    <tr>
+        <td>
+                <a class="nav-link" href="{% url 'postdetail' post.id %}">{{ post.header }}</a><br>
+        </td>
+    </tr>
+
+
+</table>
+
+{% endfor %}
+
+
+
+<!--Pagination-->
+
+{% if page_obj.has_previous %}
+       <a href="?page=1">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {# Информация о текущей странице #}
+   {{ page_obj.number }}
+
+   {# Информация о следующих страницах #}
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+
+{% endblock content %}
