@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-8olv)759a6%54vx#1vh&0@18&$f7)2w=1)vir!$iv9_2=12d31'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -41,17 +44,18 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.flatpages',
 
+    'board.apps.BoardConfig',
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    # 'allauth.socialaccount.providers.google',
 
-    'board',
     'django_filters',
+    'django_apscheduler',
 ]
 
 SITE_ID = 1
-
+SITE_URL = 'http://127.0.0.1:8000'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -87,7 +91,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'MMOboard.wsgi.application'
 
 MEDIA_URL = '/uploads/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 MEDIA_ROOT = BASE_DIR # upload's dir in root dir
 
 
@@ -139,14 +142,13 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_FORMS = {'signup': 'board.forms.BasicSignupForm'}
-# ACCOUNT_EMAIL_CONFIRMATION_HMAC = True
-DEFAULT_FROM_EMAIL = 'inskill@yandex.ru'
-# SERVER_EMAIL = 'admin@mail.com'
+
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_SSL = True
 EMAIL_HOST = 'smtp.yandex.ru'
-EMAIL_HOST_USER = 'inskill'
-EMAIL_HOST_PASSWORD = 'ygatpjkszcprfqfp'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 465
 
 # Internationalization
@@ -176,4 +178,6 @@ STATICFILES_DIRS = [
     BASE_DIR / 'staticfiles'
 ]
 
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+APSCHEDULER_RUN_NOW_TIMEOUT = 25
 

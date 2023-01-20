@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from board.resources import CATEGORY_TYPE
 
-# Create your models here.
+
 class BoardUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     on_auth = models.BooleanField(default=False)
@@ -31,6 +31,9 @@ class Post(models.Model):
     def get_absolute_url(self):
         return f'/posts/{self.id}'
 
+    def preview(self):
+        return '{}...'.format(self.text[:125])
+
 
 class Comment(models.Model):
     date = models.DateTimeField(auto_now_add=True)
@@ -41,6 +44,9 @@ class Comment(models.Model):
 
     def get_absolute_url(self):
         return f'/posts/{self.post.id}'
+
+    def preview(self):
+        return '{}...'.format(self.text[:20])
 
 
 @receiver(models.signals.post_delete, sender=Post)
@@ -76,14 +82,3 @@ def file_delete_on_change(sender, instance, **kwargs):
     if not old_file == new_file:
         if os.path.isfile(old_file.path):
             os.remove(old_file.path)
-
-
-
-# class PostCategory(models.Model):
-#     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-#     category = models.ForeignKey()
-
-
-# class PostCategory(models.Model):
-#     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-#     category = models.ForeignKey(Category, on_delete=models.CASCADE)

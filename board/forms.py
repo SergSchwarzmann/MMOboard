@@ -1,13 +1,13 @@
 from django import forms
 from django.contrib.auth.models import User, Group
 
-from .models import Post, Comment
-
 from allauth.account.forms import SignupForm
+
+from .models import Post, Comment
 
 
 class PostForm(forms.ModelForm):
-
+    """Form for create post"""
     class Meta:
         model = Post
         fields = [
@@ -23,11 +23,9 @@ class PostForm(forms.ModelForm):
             'files': 'Files',
         }
 
-    # def save(self, request):
-    #     user = super()
 
 class CommentForm(forms.ModelForm):
-
+    """Form for create comment"""
     class Meta:
         model = Comment
         fields = [
@@ -39,10 +37,9 @@ class CommentForm(forms.ModelForm):
 
 
 class BasicSignupForm(SignupForm):
-
+    """Form for signup"""
     def save(self, request):
         user = super(BasicSignupForm, self).save(request)
         user_group = Group.objects.get(name='users')
         user_group.user_set.add(user)
         return user
-

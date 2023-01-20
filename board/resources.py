@@ -1,3 +1,5 @@
+"""Resource file for project"""
+
 tank = 'Tank'
 heal = 'Heal'
 damagedealer = 'Damagedealer'
